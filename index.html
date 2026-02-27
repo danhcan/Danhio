@@ -1,15 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  table { width: 100%; border-collapse: collapse; }
-  /* Thêm cuộn ngang nếu bảng quá dài trên mobile */
-  .table-container { overflow-x: auto; }
-</style>
-    
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Khuyến Mãi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .custom-scroll::-webkit-scrollbar { height: 4px; }
@@ -23,7 +17,7 @@
             <p class="text-slate-500 text-[10px] mt-1 italic">Mỗi vị trí nhấn dẫn đến liên kết khác nhau</p>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden">
+        <div class="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden mb-6">
             <div class="overflow-x-auto custom-scroll">
                 <table class="w-full text-left text-[11px] md:text-xs border-collapse">
                     <thead class="bg-slate-800 text-white uppercase">
@@ -31,7 +25,6 @@
                             <th class="p-3">Trang </th>
                             <th class="p-3 text-center">58K</th>
                             <th class="p-3 text-center">Thao tác</th>
-                            <th class="p-3">50 Nhận 50</th>
                             <th class="p-3">Sự kiện</th>
                             <th class="p-3">Doanh Thu</th>
                         </tr>
@@ -41,160 +34,90 @@
                 </table>
             </div>
         </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-md border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">📝 Ghi chú nhanh</h3>
+            <div class="flex gap-2 mb-4">
+                <input type="text" id="noteInput" placeholder="Nhập ghi chú hoặc tài khoản..." 
+                       class="flex-1 p-2 border border-slate-300 rounded outline-none text-xs focus:ring-1 focus:ring-blue-500">
+                <button id="addBtn" class="bg-blue-600 text-white px-4 py-2 rounded font-bold text-xs">LƯU</button>
+            </div>
+            <div id="copyStatus" class="hidden text-[10px] text-green-600 mb-2 font-bold italic">Đã copy vào bộ nhớ tạm!</div>
+            <ul id="noteList" class="space-y-2"></ul>
+        </div>
     </div>
 
     <script>
-        // CẤU TRÚC DỮ LIỆU MỚI: Thay link ở 3 vị trí url tương ứng
         const data = [
-            { 
-                name: "F8BET", 
-                urlTrang: "https://f8bet6.chat?r=4RRRPZZ", // Anhkhangls
-                url58k: "https://ttkm-f8bet02.pages.dev/?promo_id=KM58",  // Nhấn vào chữ CÓ
-                urlMo: "https://f8bet6.chat?r=4RRRPZZ",    // Nhấn vào nút MỞ
-                bonus58k: true, 
-                fiftyFifty: "", 
-                events: "5.15.25", 
-                weeklyRevenue: "T5" 
-            },
-            { 
-                name: "Hi88", 
-                urlTrang: "https://hi2055.com/Register?r=V4DLR5", //Duyenlv90
-                url58k: "https://hi8ok.com/?promo_id=ND188", 
-                urlMo: "https://hi2055.com/Register?r=V4DLR5", 
-                bonus58k: true, 
-                fiftyFifty: "", 
-                events: "3.13.23", 
-                weeklyRevenue: "T3" 
-            },
-              { 
-                name: "789BET", 
-                urlTrang: "https://789121.plus/register?r=98RXLJ", // Chitech2
-                url58k: "https://ttkm789bet04.pages.dev/",  // Nhấn vào chữ CÓ
-                urlMo: "https://789121.plus/register?r=98RXLJ",    // Nhấn vào nút MỞ
-                bonus58k: true, 
-                fiftyFifty: "", 
-                events: "6.16.26", 
-                weeklyRevenue: "T5" 
-            },
-              { 
-                name: "MOCBAI", 
-                urlTrang: "https://hebeilice.com?r=PMM7QD", // Chithanhmn
-                url58k: "https://ttkm-mb66okvip02.pages.dev",  // Nhấn vào chữ CÓ
-                urlMo: "https://hebeilice.com?r=PMM7QD", // Nhấn vào nút MỞ
-                bonus58k: true, 
-                fiftyFifty: "", 
-                events: "5.15.25", 
-                weeklyRevenue: "T7" 
-            },
-              { 
-                name: "GG88", 
-                urlTrang: "https://www.gg8856.com/?id=298587710", // Anhkhangls
-                url58k: "https://gg88-ttkm.tranie-dev.workers.dev/",  // Nhấn vào chữ CÓ
-                urlMo: "https://www.gg8856.com/?id=298587710",    // Nhấn vào nút MỞ
-                bonus58k: true, 
-                fiftyFifty: "", 
-                events: "5.15.25", 
-                weeklyRevenue: "T5" 
-            },
-  { 
-                name: "SC888", 
-                urlTrang: "https://www.sc88a8.top/?id=696799282", // danhcan
-                url58k: "cóhttps://sc8803.com/SC68K",  // Nhấn vào chữ CÓ
-                urlMo: "https://www.sc88a8.top/?id=696799282",    // Nhấn vào nút MỞ
-                bonus58k: true, 
-                fiftyFifty: "", 
-                events: "5.15.25", 
-                weeklyRevenue: "T5" 
-            },
-            { 
-                name: "CM88", 
-                urlTrang: "https://m.cm8868.com/?id=990907926", // ltnbls90
-                url58k: "https://khuyenmaicm88.com/?promo_id=CM58K",  // Nhấn vào chữ CÓ
-                urlMo: "https://m.cm8868.com/?id=990907926",    // Nhấn vào nút MỞ
-                bonus58k: true, 
-                fiftyFifty: "", 
-                events: "5.15.25", 
-                weeklyRevenue: "T5" 
-            },
-            { 
-                name: "FLY88", 
-                urlTrang: "https://m.fly88j.com/?id=641634086", // danhhcan
-                url58k: "https://fly88code.net/?promo_id=FLY58",  // Nhấn vào chữ CÓ
-                urlMo: "https://fly88code.net/?promo_id=FLY58",    // Nhấn vào nút MỞ
-                bonus58k: true, 
-                fiftyFifty: "", 
-                events: "5.15.25", 
-                weeklyRevenue: "T5" 
-            },
-            // Bạn có thể copy mẫu trên cho các nhà cái còn lại...
+            { name: "F8BET", urlTrang: "https://f8bet6.chat?r=4RRRPZZ", url58k: "https://ttkm-f8bet02.pages.dev/?promo_id=KM58", urlMo: "https://f8bet6.chat?r=4RRRPZZ", bonus58k: true, events: "5.15.25", weeklyRevenue: "T5" },
+            { name: "Hi88", urlTrang: "https://hi2055.com/Register?r=V4DLR5", url58k: "https://hi8ok.com/?promo_id=ND188", urlMo: "https://hi2055.com/Register?r=V4DLR5", bonus58k: true, events: "3.13.23", weeklyRevenue: "T3" },
+            { name: "789BET", urlTrang: "https://789121.plus/register?r=98RXLJ", url58k: "https://ttkm789bet04.pages.dev/", urlMo: "https://789121.plus/register?r=98RXLJ", bonus58k: true, events: "6.16.26", weeklyRevenue: "T5" },
+            { name: "MOCBAI", urlTrang: "https://hebeilice.com?r=PMM7QD", url58k: "https://ttkm-mb66okvip02.pages.dev", urlMo: "https://hebeilice.com?r=PMM7QD", bonus58k: true, events: "5.15.25", weeklyRevenue: "T7" },
+            { name: "GG88", urlTrang: "https://www.gg8856.com/?id=298587710", url58k: "https://gg88-ttkm.tranie-dev.workers.dev/", urlMo: "https://www.gg8856.com/?id=298587710", bonus58k: true, events: "5.15.25", weeklyRevenue: "T5" },
+            { name: "SC888", urlTrang: "https://www.sc88a8.top/?id=696799282", url58k: "https://sc8803.com/SC68K", urlMo: "https://www.sc88a8.top/?id=696799282", bonus58k: true, events: "5.15.25", weeklyRevenue: "T5" },
+            { name: "CM88", urlTrang: "https://m.cm8868.com/?id=990907926", url58k: "https://khuyenmaicm88.com/?promo_id=CM58K", urlMo: "https://m.cm8868.com/?id=990907926", bonus58k: true, events: "5.15.25", weeklyRevenue: "T5" },
+            { name: "FLY88", urlTrang: "https://m.fly88j.com/?id=641634086", url58k: "https://fly88code.net/?promo_id=FLY58", urlMo: "https://fly88code.net/?promo_id=FLY58", bonus58k: true, events: "5.15.25", weeklyRevenue: "T5" }
         ];
 
         function renderTable() {
             const tableBody = document.getElementById('promoTable');
+            if(!tableBody) return;
             tableBody.innerHTML = data.map(item => `
-                <tr class="hover:bg-slate-50 transition-colors">
-                    <td class="p-3 font-bold text-blue-600 uppercase underline cursor-pointer hover:text-blue-800" 
-                        onclick="window.open('${item.urlTrang}', '_blank')">
-                        ${item.name}
-                    </td>
-
-                    <td class="p-3 text-center">
-                        ${item.bonus58k ? `
-                            <span onclick="window.open('${item.url58k}', '_blank')" 
-                                  class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-bold text-[10px] cursor-pointer hover:bg-green-600 hover:text-white transition-all shadow-sm">
-                                CÓ
-                            </span>` : '—'}
-                    </td>
-
-                    <td class="p-3 text-center">
-                        <button onclick="window.open('${item.urlMo}', '_blank')" 
-                                class="bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-[10px] hover:bg-blue-700 active:scale-95 uppercase shadow-sm">
-                            Mở
-                        </button>
-                    </td>
-
-                    <td class="p-3 text-slate-600 font-medium">${item.fiftyFifty || ""}</td>
-                    <td class="p-3 text-slate-800 font-semibold">${item.events || ""}</td>
-                    <td class="p-3">
-                        <span class="text-orange-600 font-bold bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100 uppercase">
-                            ${item.weeklyRevenue || ""}
-                        </span>
-                    </td>
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3 font-bold text-blue-600 uppercase underline cursor-pointer" onclick="window.open('${item.urlTrang}', '_blank')">${item.name}</td>
+                    <td class="p-3 text-center">${item.bonus58k ? `<span onclick="window.open('${item.url58k}', '_blank')" class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-bold text-[10px] cursor-pointer shadow-sm">CÓ</span>` : '—'}</td>
+                    <td class="p-3 text-center"><button onclick="window.open('${item.urlMo}', '_blank')" class="bg-blue-600 text-white px-3 py-1.5 rounded font-bold text-[10px] uppercase shadow-sm">Mở</button></td>
+                    <td class="p-3 text-slate-800 font-semibold text-center">${item.events || ""}</td>
+                    <td class="p-3 text-center"><span class="text-orange-600 font-bold bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100 uppercase">${item.weeklyRevenue || ""}</span></td>
                 </tr>
             `).join('');
         }
 
-        renderTable();
+        // --- GHI CHÚ VÀ COPY ---
+        const noteInput = document.getElementById('noteInput');
+        const noteList = document.getElementById('noteList');
+        const status = document.getElementById('copyStatus');
+
+        function saveNote(text) {
+            let notes = localStorage.getItem('myWebNotes') ? JSON.parse(localStorage.getItem('myWebNotes')) : [];
+            notes.push(text);
+            localStorage.setItem('myWebNotes', JSON.stringify(notes));
+            displayNotes();
+        }
+
+        function displayNotes() {
+            let notes = localStorage.getItem('myWebNotes') ? JSON.parse(localStorage.getItem('myWebNotes')) : [];
+            noteList.innerHTML = notes.map((note, index) => `
+                <li class="flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200 text-xs shadow-sm">
+                    <span class="flex-1 cursor-pointer hover:text-blue-600 font-medium" onclick="copyToClipboard('${note}')">● ${note}</span>
+                    <button onclick="deleteNote(${index})" class="text-red-500 font-bold ml-2">Xóa</button>
+                </li>
+            `).join('');
+        }
+
+        window.copyToClipboard = (text) => {
+            navigator.clipboard.writeText(text).then(() => {
+                status.classList.remove('hidden');
+                setTimeout(() => status.classList.add('hidden'), 2000);
+            });
+        };
+
+        window.deleteNote = (i) => {
+            let notes = JSON.parse(localStorage.getItem('myWebNotes'));
+            notes.splice(i, 1);
+            localStorage.setItem('myWebNotes', JSON.stringify(notes));
+            displayNotes();
+        };
+
+        document.getElementById('addBtn').addEventListener('click', () => {
+            if (noteInput.value.trim()) { saveNote(noteInput.value); noteInput.value = ""; }
+        });
+
+        // ĐẢM BẢO CHẠY NGAY KHI TRANG LOAD
+        window.addEventListener('load', () => {
+            renderTable();
+            displayNotes();
+        });
     </script>
 </body>
-<div class="note-box" style="margin-top: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
-  <label for="user-note" style="font-weight: bold; display: block; margin-bottom: 10px;">
-    📝 Ghi chú cá nhân (Tự động lưu):
-  </label>
-  <textarea id="user-note" placeholder="Ví dụ: Tài khoản danhphuocmn đã đăng ký F8BET..." 
-            style="width: 100%; height: 120px; padding: 12px; border-radius: 8px; border: 2px solid #2563eb; font-family: sans-serif;"></textarea>
-  <p id="status" style="font-size: 12px; color: green; margin-top: 5px; display: none;">✅ Đã tự động lưu!</p>
-</div>
-
-<script>
-  const noteArea = document.getElementById('user-note');
-  const status = document.getElementById('status');
-
-  // 1. Khi vừa mở web, lấy dữ liệu cũ đã lưu (nếu có) và hiện lên
-  window.onload = function() {
-    const savedNote = localStorage.getItem('myWebNote');
-    if (savedNote) {
-      noteArea.value = savedNote;
-    }
-  };
-
-  // 2. Mỗi khi bạn gõ chữ, nó sẽ tự lưu vào bộ nhớ trình duyệt
-  noteArea.addEventListener('input', function() {
-    localStorage.setItem('myWebNote', noteArea.value);
-    
-    // Hiện thông báo "Đã lưu" trong 1 giây rồi ẩn
-    status.style.display = 'block';
-    setTimeout(() => {
-      status.style.
-
 </html>
