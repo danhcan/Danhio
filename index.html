@@ -70,54 +70,6 @@
                     <td class="p-3 text-slate-800 font-semibold text-center">${item.events || ""}</td>
                     <td class="p-3 text-center"><span class="text-orange-600 font-bold bg-orange-50 px-1.5 py-0.5 rounded border border-orange-100 uppercase">${item.weeklyRevenue || ""}</span></td>
                 </tr>
-            `).join('');
-        }
-
-        // --- GHI CHÚ VÀ COPY ---
-        const noteInput = document.getElementById('noteInput');
-        const noteList = document.getElementById('noteList');
-        const status = document.getElementById('copyStatus');
-
-        function saveNote(text) {
-            let notes = localStorage.getItem('myWebNotes') ? JSON.parse(localStorage.getItem('myWebNotes')) : [];
-            notes.push(text);
-            localStorage.setItem('myWebNotes', JSON.stringify(notes));
-            displayNotes();
-        }
-
-        function displayNotes() {
-            let notes = localStorage.getItem('myWebNotes') ? JSON.parse(localStorage.getItem('myWebNotes')) : [];
-            noteList.innerHTML = notes.map((note, index) => `
-                <li class="flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-200 text-xs shadow-sm">
-                    <span class="flex-1 cursor-pointer hover:text-blue-600 font-medium" onclick="copyToClipboard('${note}')">● ${note}</span>
-                    <button onclick="deleteNote(${index})" class="text-red-500 font-bold ml-2">Xóa</button>
-                </li>
-            `).join('');
-        }
-
-        window.copyToClipboard = (text) => {
-            navigator.clipboard.writeText(text).then(() => {
-                status.classList.remove('hidden');
-                setTimeout(() => status.classList.add('hidden'), 2000);
-            });
-        };
-
-        window.deleteNote = (i) => {
-            let notes = JSON.parse(localStorage.getItem('myWebNotes'));
-            notes.splice(i, 1);
-            localStorage.setItem('myWebNotes', JSON.stringify(notes));
-            displayNotes();
-        };
-
-        document.getElementById('addBtn').addEventListener('click', () => {
-            if (noteInput.value.trim()) { saveNote(noteInput.value); noteInput.value = ""; }
-        });
-
-        // ĐẢM BẢO CHẠY NGAY KHI TRANG LOAD
-        window.addEventListener('load', () => {
-            renderTable();
-            displayNotes();
-        });
-    </script>
+       
 </body>
 </html>
